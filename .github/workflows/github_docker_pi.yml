@@ -19,12 +19,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-      
-      - name: Set up QEMU #Adds support for architectures other than the host
-        uses: docker/setup-qemu-action@master
-        with:
-          platforms: linux/amd64, linux/arm/v7
-      
+        
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
@@ -33,23 +28,28 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v2
         with:
-          builder: ${{ steps.buildx.outputs.name }}
-          context: ./
-          file: ./Dockerfile
-          platforms: linux/amd64,linux/arm/v7
+          #builder: ${{ steps.buildx.outputs.name }}
+          context: .
+          platforms: linux/arm/v7 #linux/amd64,
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/personal-website:latest
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
         
-#  deploy:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: SSH Remote Commands
-#        uses: appleboy/ssh-action@v0.1.4
-#        with:
-#          host:
-#          username: ${{ secrets.PI_USERNAME }}
-#          password: ${{ secrets.PI_PASSWORD }}
-#          script:  docker ps
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH Remote Commands
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.PI_DOMAIN }}
+          port: 22
+          username: ${{ secrets.PI_USERNAME }}
+          password: ${{ secrets.PI_PASSWORD }}
+          script: |
+            contId=$(docker ps | grep luispflamminger/personal-website | grep -o '^\S*')
+            docker stop $contId
+            docker rm $contId
+            docker run -dp 80:80 --platform linux/arm/v7 luispflamminger/personal-website
+          
