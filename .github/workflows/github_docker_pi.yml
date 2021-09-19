@@ -76,5 +76,10 @@ jobs:
             contId=$(docker ps | grep luispflamminger/personal-website | grep -o '^\S*')
             docker stop $contId
             docker rm $contId
-            docker run -dp 80:80 --platform linux/arm/v7 luispflamminger/personal-website
+            docker run -d \
+            -p 443:443 \
+            -p 80:80 \
+            --platform linux/arm/v7 \
+            --mount type=bind,src=/home/pi/certs/personal-website,dst=/etc/nginx/certs \
+            luispflamminger/personal-website 
           
