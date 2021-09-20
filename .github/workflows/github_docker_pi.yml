@@ -78,6 +78,8 @@ jobs:
             contId=$(docker ps | grep luispflamminger/personal-website | grep -o '^\S*')
             docker stop $contId
             docker rm $contId
+            docker image rm luispflamminger/personal-website:latest
+            docker pull --platform linux/arm/v7 luispflamminger/personal-website:latest
             docker run -d \
             -p 443:443 \
             --platform linux/arm/v7 \
