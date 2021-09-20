@@ -79,9 +79,10 @@ jobs:
             docker stop $contId
             docker rm $contId
             docker run -d \
-            -p 80:80
-            -p 443:443
+            -p 80:80 \
+            -p 443:443 \
             --platform linux/arm/v7 \
-            --mount type=bind,src=/home/pi/certs/personal-website,dst=/etc/nginx/certs \
+            --mount type=bind,src=/home/pi/personal-website/ssl/certs,dst=/etc/nginx/ssl/certs \
+            --mount type=bind,src=/home/pi/personal-website/ssl/private,dst=/etc/nginx/ssl/private \
             luispflamminger/personal-website 
           
