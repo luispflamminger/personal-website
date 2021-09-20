@@ -36,8 +36,8 @@ jobs:
         with:
           platforms: linux/arm/v7,linux/amd64
       
-      - name: Available platforms QEMU
-        run: echo ${{ steps.qemu.outputs.platforms }}
+      #- name: Available platforms QEMU
+      #  run: echo ${{ steps.qemu.outputs.platforms }}
       
       - name: Set up Docker Buildx
         id: buildx
@@ -45,15 +45,15 @@ jobs:
         with:
           install: true
 
-      - name: Available platforms buildx
-        run: echo ${{ steps.buildx.outputs.platforms }}
+      #- name: Available platforms buildx
+      #  run: echo ${{ steps.buildx.outputs.platforms }}
 
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
         with:
           context: .
-          platforms: linux/arm/v7,linux/amd64
+          platforms: linux/arm/v7 #,linux/amd64
           builder: ${{ steps.buildx.outputs.name }}
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/personal-website:latest
@@ -79,6 +79,8 @@ jobs:
             docker stop $contId
             docker rm $contId
             docker run -d \
+            -p 80:80
+            -p 443:443
             --platform linux/arm/v7 \
             --mount type=bind,src=/home/pi/certs/personal-website,dst=/etc/nginx/certs \
             luispflamminger/personal-website 
