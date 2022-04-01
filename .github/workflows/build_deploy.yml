@@ -5,8 +5,8 @@ name: Build and push the image to Dockerhub, then deploy it
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push events but only for the main branch
-  push:
-    branches: [ main ]
+  #push:
+  #  branches: [ main ]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -46,5 +46,8 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Run deploy script
-        run: sudo ./.github/scripts/deploy.sh
+        run: |
+          pwd
+          ls
+          #sudo ./.github/scripts/deploy.sh
         shell: bash
