@@ -18,5 +18,5 @@ jobs:
         run: |
           pwd
           ls
-          #sudo ./.github/scripts/deploy.sh
+          sudo ./.github/scripts/deploy.sh
         shell: bash
