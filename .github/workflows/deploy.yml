@@ -20,5 +20,5 @@ jobs:
         run: |
           pwd
           ls
-          sudo ./scripts/deploy.sh
+          sudo $(pwd)/scripts/deploy.sh
         shell: bash
