@@ -19,5 +19,5 @@ jobs:
       - name: Run deploy script
         run: |
           chmod +x $(pwd)/scripts/deploy.sh
-          $(pwd)/scripts.deploy.sh
+          $(pwd)/scripts/deploy.sh
         shell: bash
